@@ -1,0 +1,27 @@
+{
+  "name": "troc-package-template",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch --progress --env mode=development"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EvgenyiFedotov/troc-package-template.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EvgenyiFedotov/troc-package-template/issues"
+  },
+  "homepage": "https://github.com/EvgenyiFedotov/troc-package-template#readme",
+  "devDependencies": {
+    "@start-packages/eslint-typescript": "git+https://github.com/EvgenyiFedotov/start-packages.git#eslint/typescript",
+    "@start-packages/webpack-typescript-node": "git+https://github.com/EvgenyiFedotov/start-packages.git#webpack/typescript-node",
+    "ts-loader": "^9.2.7"
+  }
+}
