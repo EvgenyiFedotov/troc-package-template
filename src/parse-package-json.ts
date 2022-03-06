@@ -1,7 +1,4 @@
-export type PackageJson = {
-  devDependencies: object;
-  dependencies: object;
-};
+import { PackageJson } from "./read-package-json";
 
 export type Instruction = [string, string[]];
 

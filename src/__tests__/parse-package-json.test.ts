@@ -3,12 +3,14 @@ import * as path from "path";
 
 import spawn from "../spawn";
 import parsePackageJson from "../parse-package-json";
+import readPackageJson from "../read-package-json";
 
 describe("parse-package-json", () => {
   test("parse", async () => {
-    const packageJsonFile = path.resolve(__dirname, "../../package.json");
-    const data = JSON.parse((await fsp.readFile(packageJsonFile)).toString());
-    const result = await parsePackageJson(data);
+    const { value: data } = await readPackageJson(
+      path.resolve(__dirname, "../../package.json")
+    );
+    const result = await parsePackageJson(data || {});
 
     const packageDir = path.resolve(__dirname, "./package");
 
