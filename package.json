@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "webpack",
     "start": "webpack --watch --progress --env mode=development"
   },
@@ -22,6 +22,8 @@
   "devDependencies": {
     "@start-packages/eslint-typescript": "git+https://github.com/EvgenyiFedotov/start-packages.git#eslint/typescript",
     "@start-packages/webpack-typescript-node": "git+https://github.com/EvgenyiFedotov/start-packages.git#webpack/typescript-node",
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
     "ts-loader": "^9.2.7"
   }
 }
