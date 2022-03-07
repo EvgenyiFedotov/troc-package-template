@@ -1,5 +1,5 @@
 .DS_Store
 node_modules
 dist
-**/__tests__/package
-**/__tests__/.repos
+**/__tests__/package*
+**/__tests__/.repos*

@@ -1,11 +1,22 @@
-import { PackageJson } from "./read-package-json";
+import * as path from "path";
+
+import { MethodResult } from "./types";
+import readPackageJson, { PackageJson } from "./read-package-json";
 
 export type Instruction = [string, string[]];
 
 export default async function parsePackageJson(
-  json: PackageJson
-): Promise<Instruction[]> {
+  file: string
+): Promise<MethodResult<Instruction[], any>> {
+  const resultRead = await readPackageJson(file);
+
+  if ("error" in resultRead) return resultRead;
+
+  const json = resultRead.data;
   const instructions: Instruction[] = [];
+
+  // Install current package (for running scripts from package.json)
+  instructions.push(["npm", ["install", path.dirname(file)]]);
 
   // Dependencies
   const deps: string[] = getDepPackages(json, "dependencies");
@@ -21,7 +32,9 @@ export default async function parsePackageJson(
     instructions.push(["npm", ["install", ...devDeps, "--save-dev"]]);
   }
 
-  return instructions;
+  instructions.push(["npm", ["uninstall", json.name]]);
+
+  return { data: instructions };
 }
 
 function getDepPackages(

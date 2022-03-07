@@ -2,6 +2,7 @@ import * as path from "path";
 import * as fsp from "fs/promises";
 
 import spawn from "./spawn";
+import { MethodResult } from "./types";
 
 export default async function cloneGitRepo({
   url: _url,
@@ -13,17 +14,34 @@ export default async function cloneGitRepo({
   name?: string;
   branch?: string;
   cwd?: string;
-}): Promise<string> {
+}): Promise<MethodResult<string, string>> {
   const url: URL = new URL(_url.replace("git+", ""));
   const branch: string = _branch || url.hash.replace("#", "") || "master";
-  const cwd = _cwd || process.cwd();
+  const cwd = _cwd || path.resolve(process.cwd(), "./.repos");
 
   url.hash = "";
 
-  const repoDir = path.join(cwd, ".repos", name || url.pathname);
+  const repoDir = path.join(cwd, name || url.pathname);
 
-  await spawn("git", ["clone", url.href, repoDir], { cwd });
-  await spawn("git", ["checkout", branch], { cwd: repoDir });
+  try {
+    await fsp.mkdir(cwd, { recursive: true });
+  } catch (error) {
+    return { error };
+  }
 
-  return repoDir;
+  const resultGitClone = await spawn("git", ["clone", url.href, repoDir], {
+    cwd,
+  });
+
+  if (!("data" in resultGitClone))
+    return { error: resultGitClone.error.toString() };
+
+  const resultGitCheckout = await spawn("git", ["checkout", branch], {
+    cwd: repoDir,
+  });
+
+  if (!("data" in resultGitCheckout))
+    return { error: resultGitCheckout.error.toString() };
+
+  return { data: repoDir };
 }
