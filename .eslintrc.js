@@ -1,1 +1,6 @@
-module.exports = require("@start-packages/eslint-typescript");
+const config = require("@start-packages/eslint-typescript");
+
+module.exports = {
+  ...config,
+  ignorePatterns: [...config.ignorePatterns, "shell-plugin.js", "scripts/**"],
+};
