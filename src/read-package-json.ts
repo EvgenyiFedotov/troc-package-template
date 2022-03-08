@@ -14,8 +14,11 @@ export default async function readPackageJson(
 ): Promise<MethodResult<PackageJson, any>> {
   try {
     await fsp.access(file);
-    return { data: JSON.parse((await fsp.readFile(file)).toString()) };
+    return {
+      data: JSON.parse((await fsp.readFile(file)).toString()),
+      error: null,
+    };
   } catch (error) {
-    return { error };
+    return { data: null, error };
   }
 }

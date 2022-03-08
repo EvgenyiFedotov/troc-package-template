@@ -16,10 +16,10 @@ describe("clone-git-repo", () => {
       cwd: reposDir,
     });
 
-    if (!("data" in resultClone)) throw resultClone.error.toString();
+    if (resultClone.error) throw resultClone.error.toString();
 
     expect(resultClone.data).toBe(
-      path.resolve(reposDir, ".//EvgenyiFedotov/start-packages.git")
+      path.resolve(reposDir, "./EvgenyiFedotov/start-packages.git")
     );
   });
 
@@ -31,7 +31,7 @@ describe("clone-git-repo", () => {
       cwd: reposDir,
     });
 
-    if (!("data" in resultClone)) throw resultClone.error.toString();
+    if (resultClone.error) throw resultClone.error.toString();
 
     expect(resultClone.data).toBe(
       path.resolve(reposDir, "./package-repo-name")

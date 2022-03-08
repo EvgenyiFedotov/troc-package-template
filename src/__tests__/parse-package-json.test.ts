@@ -8,7 +8,7 @@ describe("parse-package-json", () => {
       path.resolve(__dirname, "../../package.json")
     );
 
-    if ("error" in result) throw result.error;
+    if (result.error) throw result.error;
 
     expect(result.data).toBeInstanceOf(Array);
   });

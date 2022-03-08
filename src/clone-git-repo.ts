@@ -21,27 +21,35 @@ export default async function cloneGitRepo({
 
   url.hash = "";
 
-  const repoDir = path.join(cwd, name || url.pathname);
-
   try {
     await fsp.mkdir(cwd, { recursive: true });
   } catch (error) {
-    return { error };
+    return { data: null, error };
+  }
+
+  const repoDir = path.join(cwd, name || url.pathname);
+
+  try {
+    await fsp.rm(repoDir, { recursive: true, force: true });
+  } catch (error) {
+    return { data: null, error };
   }
 
   const resultGitClone = await spawn("git", ["clone", url.href, repoDir], {
     cwd,
   });
 
-  if (!("data" in resultGitClone))
-    return { error: resultGitClone.error.toString() };
+  if (resultGitClone.code !== 0 && "error" in resultGitClone) {
+    return { data: null, error: resultGitClone.error.toString() };
+  }
 
   const resultGitCheckout = await spawn("git", ["checkout", branch], {
     cwd: repoDir,
   });
 
-  if (!("data" in resultGitCheckout))
-    return { error: resultGitCheckout.error.toString() };
+  if (resultGitCheckout.code !== 0 && "error" in resultGitCheckout) {
+    return { data: null, error: resultGitCheckout.error.toString() };
+  }
 
-  return { data: repoDir };
+  return { data: repoDir, error: null };
 }

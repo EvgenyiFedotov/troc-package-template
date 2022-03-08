@@ -10,7 +10,7 @@ export default async function parsePackageJson(
 ): Promise<MethodResult<Instruction[], any>> {
   const resultRead = await readPackageJson(file);
 
-  if ("error" in resultRead) return resultRead;
+  if (resultRead.error) return { data: null, error: resultRead.error };
 
   const json = resultRead.data;
   const instructions: Instruction[] = [];
@@ -34,7 +34,7 @@ export default async function parsePackageJson(
 
   instructions.push(["npm", ["uninstall", json.name]]);
 
-  return { data: instructions };
+  return { data: instructions, error: null };
 }
 
 function getDepPackages(

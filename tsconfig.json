@@ -2,6 +2,7 @@
   "compilerOptions": {
     "noEmit": false,
     "declaration": true,
+    "resolveJsonModule": true,
     "baseUrl": "./src",
     "outDir": "./dist"
   },

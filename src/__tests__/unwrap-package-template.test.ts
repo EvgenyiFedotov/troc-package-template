@@ -9,14 +9,14 @@ beforeAll(async () => {
   await fsp.rm(reposDir, { force: true, recursive: true });
 });
 
-describe("take-package-template", () => {
-  test("take", async () => {
+describe("unwrap-package-template", () => {
+  test("unwrap", async () => {
     const result = await unwrapPackageTemplate({
       url: "https://github.com/EvgenyiFedotov/start-packages.git#eslint/typescript",
       cwd: reposDir,
     });
 
-    if ("error" in result) throw result.error;
+    if (result.error) throw result.error;
 
     expect(result.data).toBeInstanceOf(Array);
   });

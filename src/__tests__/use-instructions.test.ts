@@ -20,7 +20,7 @@ describe("use-instructions", () => {
       cwd: reposDir,
     });
 
-    if ("error" in resultUnwrap) return resultUnwrap;
+    if (resultUnwrap.error) return resultUnwrap;
 
     await fsp.mkdir(packageDir, { recursive: true });
     await spawn("npm", ["init", "--force"], { cwd: packageDir });

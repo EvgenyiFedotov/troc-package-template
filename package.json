@@ -4,6 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "troc-pt": "dist/cli.js"
+  },
   "scripts": {
     "test": "jest",
     "build": "webpack",
@@ -25,5 +28,9 @@
     "@types/jest": "^27.4.1",
     "jest": "^27.5.1",
     "ts-loader": "^9.2.7"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "commander": "^9.0.0"
   }
 }

@@ -13,5 +13,5 @@ export default async function useInstructions({
     await spawn(...instruction, { cwd: targetDir });
   }
 
-  return { data: undefined };
+  return { data: undefined, error: null };
 }

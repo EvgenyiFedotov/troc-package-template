@@ -9,13 +9,15 @@ export default async function unwrapPackageTemplate(
 ): Promise<MethodResult<Instruction[], string>> {
   const resultClone = await cloneGitRepo(repo);
 
-  if ("error" in resultClone) return { error: "Error clone git repo" };
+  if (resultClone.error) return { data: null, error: resultClone.error };
 
   const resultParse = await parsePackageJson(
     path.resolve(resultClone.data, "./package.json")
   );
 
-  if ("error" in resultParse) return { error: "Error parse package.json" };
+  if (resultParse.error) {
+    return { data: null, error: "Error parse package.json" };
+  }
 
   return resultParse;
 }
