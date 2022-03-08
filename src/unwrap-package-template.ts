@@ -2,16 +2,11 @@ import * as path from "path";
 
 import cloneGitRepo from "./clone-git-repo";
 import { MethodResult } from "./types";
-import parsePackageJson from "./parse-package-json";
-import spawn from "./spawn";
+import parsePackageJson, { Instruction } from "./parse-package-json";
 
-export default async function takePackageTemplate({
-  repo,
-  targetDir,
-}: {
-  repo: Parameters<typeof cloneGitRepo>[0];
-  targetDir: string;
-}): Promise<MethodResult<void, string>> {
+export default async function unwrapPackageTemplate(
+  repo: Parameters<typeof cloneGitRepo>[0]
+): Promise<MethodResult<Instruction[], string>> {
   const resultClone = await cloneGitRepo(repo);
 
   if ("error" in resultClone) return { error: "Error clone git repo" };
@@ -22,7 +17,5 @@ export default async function takePackageTemplate({
 
   if ("error" in resultParse) return { error: "Error parse package.json" };
 
-  for (const instruction of resultParse.data) {
-    await spawn(...instruction, { cwd: targetDir });
-  }
+  return resultParse;
 }
