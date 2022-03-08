@@ -26,11 +26,13 @@
     "@start-packages/eslint-typescript": "git+https://github.com/EvgenyiFedotov/start-packages.git#eslint/typescript",
     "@start-packages/webpack-typescript-node": "git+https://github.com/EvgenyiFedotov/start-packages.git#webpack/typescript-node",
     "@types/jest": "^27.4.1",
+    "@types/prompts": "^2.0.14",
     "jest": "^27.5.1",
     "ts-loader": "^9.2.7"
   },
   "dependencies": {
     "colors": "^1.4.0",
-    "commander": "^9.0.0"
+    "commander": "^9.0.0",
+    "prompts": "^2.4.2"
   }
 }

@@ -27,7 +27,6 @@ describe("clone-git-repo", () => {
     const resultClone = await cloneGitRepo({
       url: "https://github.com/EvgenyiFedotov/start-packages.git",
       name: "package-repo-name",
-      branch: "webpack/typescript-node",
       cwd: reposDir,
     });
 

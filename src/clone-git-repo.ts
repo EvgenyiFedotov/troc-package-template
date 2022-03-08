@@ -7,7 +7,6 @@ import { MethodResult } from "./types";
 export default async function cloneGitRepo({
   url: _url,
   name,
-  branch: _branch,
   cwd: _cwd,
 }: {
   url: string;
@@ -16,7 +15,6 @@ export default async function cloneGitRepo({
   cwd?: string;
 }): Promise<MethodResult<string, string>> {
   const url: URL = new URL(_url.replace("git+", ""));
-  const branch: string = _branch || url.hash.replace("#", "") || "master";
   const cwd = _cwd || path.resolve(process.cwd(), "./.repos");
 
   url.hash = "";
@@ -39,16 +37,8 @@ export default async function cloneGitRepo({
     cwd,
   });
 
-  if (resultGitClone.code !== 0 && "error" in resultGitClone) {
+  if (resultGitClone.code !== 0 && resultGitClone.error) {
     return { data: null, error: resultGitClone.error.toString() };
-  }
-
-  const resultGitCheckout = await spawn("git", ["checkout", branch], {
-    cwd: repoDir,
-  });
-
-  if (resultGitCheckout.code !== 0 && "error" in resultGitCheckout) {
-    return { data: null, error: resultGitCheckout.error.toString() };
   }
 
   return { data: repoDir, error: null };
