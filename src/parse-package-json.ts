@@ -1,14 +1,14 @@
 import * as path from "path";
 
-import { MethodResult } from "./types";
-import readPackageJson, { PackageJson } from "./read-package-json";
+import { MethodResult, PackageJson } from "./types";
+import readPackageJson from "./read-json";
 
 export type Instruction = [string, string[]];
 
 export default async function parsePackageJson(
   file: string
 ): Promise<MethodResult<Instruction[], any>> {
-  const resultRead = await readPackageJson(file);
+  const resultRead = await readPackageJson<PackageJson>(file);
 
   if (resultRead.error) return { data: null, error: resultRead.error };
 

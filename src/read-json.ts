@@ -2,18 +2,12 @@ import * as fsp from "fs/promises";
 
 import { MethodResult } from "./types";
 
-export type PackageJson = {
-  name: string;
-  version: string;
-  devDependencies?: object;
-  dependencies?: object;
-};
-
-export default async function readPackageJson(
+export default async function readJson<Result extends object = object>(
   file: string
-): Promise<MethodResult<PackageJson, any>> {
+): Promise<MethodResult<Result, unknown>> {
   try {
     await fsp.access(file);
+
     return {
       data: JSON.parse((await fsp.readFile(file)).toString()),
       error: null,

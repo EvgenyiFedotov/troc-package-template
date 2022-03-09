@@ -10,12 +10,27 @@ import cloneGitRepo from "./clone-git-repo";
 import parsePackageJson from "./parse-package-json";
 import checkoutGitRepo from "./checkout-git-repo";
 import getGitRepoBranches from "./get-git-repo-branches";
+import readJson from "./read-json";
+import { StateJson } from "./types";
+import writeJson from "./write-json";
 
 program
   .version(version)
   .argument("<url>", "Repo url")
   .option("-i, --interactive", "Interactive mode")
   .action(async (url, { interactive = false }) => {
+    // Read state
+    const stateFile = resolve(__dirname, "./state.json");
+
+    console.log(stateFile);
+
+    const resultReadState = await readJson<StateJson>(stateFile);
+
+    const state: StateJson = resultReadState.error
+      ? { repos: {} }
+      : resultReadState.data;
+
+    // Clone repo
     const reposDir = resolve(__dirname, "./__troc-repos__");
 
     const resultClone = await cloneGitRepo({ url, cwd: reposDir });
@@ -24,6 +39,7 @@ program
       return console.error("\n", red(resultClone.error));
     }
 
+    // Get branch
     let branch: string | null = null;
 
     if (interactive) {
@@ -50,6 +66,7 @@ program
 
     await checkoutGitRepo({ dir: resultClone.data, url, branch });
 
+    // Get instructions
     const resultParse = await parsePackageJson(
       resolve(resultClone.data, "./package.json")
     );
@@ -58,6 +75,7 @@ program
       return console.error("\n", red(resultParse.error));
     }
 
+    // Use instructions
     const targetDir = process.cwd();
 
     const resultUse = await useInstructions({
@@ -66,6 +84,28 @@ program
     });
 
     if (resultUse.error) return console.error(red(resultUse.error));
+
+    if (interactive) {
+      // Save repo to local
+      const { alias } = await prompts([
+        {
+          type: "text",
+          name: "alias",
+          message: "Enter alias of current repo",
+          initial: "base",
+        },
+      ]);
+
+      if (alias) {
+        state.repos[alias] = { url };
+
+        const resultWrite = await writeJson(stateFile, state);
+
+        if (resultWrite.error) {
+          return console.error("\n", red(resultWrite.error));
+        }
+      }
+    }
   });
 
 program.parse(process.argv);
