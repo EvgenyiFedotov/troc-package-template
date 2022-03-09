@@ -1,3 +1,5 @@
+import * as parseUrl from "git-url-parse";
+
 import spawn from "./spawn";
 import { MethodResult } from "./types";
 
@@ -10,7 +12,7 @@ export default async function checkoutGitRepo({
   url?: string;
   branch?: string;
 }): Promise<MethodResult<string, string>> {
-  const url: URL = new URL(_url.replace("git+", ""));
+  const url = parseUrl(_url);
   const branch: string = _branch || url.hash.replace("#", "") || "master";
 
   const resultGitCheckout = await spawn("git", ["checkout", branch], {

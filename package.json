@@ -25,6 +25,7 @@
   "devDependencies": {
     "@start-packages/eslint-typescript": "git+https://github.com/EvgenyiFedotov/start-packages.git#eslint/typescript",
     "@start-packages/webpack-typescript-node": "git+https://github.com/EvgenyiFedotov/start-packages.git#webpack/typescript-node",
+    "@types/git-url-parse": "^9.0.1",
     "@types/jest": "^27.4.1",
     "@types/prompts": "^2.0.14",
     "jest": "^27.5.1",
@@ -33,6 +34,7 @@
   "dependencies": {
     "colors": "^1.4.0",
     "commander": "^9.0.0",
+    "git-url-parse": "^11.6.0",
     "prompts": "^2.4.2"
   }
 }
